@@ -13,14 +13,25 @@ const products = [
       "Costuras dobles para mayor durabilidad",
       "Colores que no se destiñen"
     ],
-    precio: "s/ 30",
+    precio: "s/30",
     cuidados: "Lavar en agua fría, secar a la sombra, planchar a temperatura media"
   },
   {
-    modelo: "P002",
-    tipo: "polera",
+    modelo: "Jordan 23",
+    tipo: "polo",
     tallas: ["M", "L", "XL"],
-    imagen: "img/polera1.jpg"
+    imagenDelantera: "polos marca/polo23.png",
+    imagenTrasera: "polos marca/polo23.png", // Agregar imagen trasera
+    descripcion: "Polo Jordan 23 edición especial",
+    descripcionCompleta: "Polo Jordan 23 edición especial con logo bordado.",
+    caracteristicas: [
+      "Material: Mezcla de algodón y poliéster",
+      "Logo bordado en el pecho",
+      "Diseño exclusivo de la marca Jordan",
+      "Colores vibrantes"
+    ],
+    precio: "s/45",
+    cuidados: "Lavar a mano, no usar blanqueador, secar al aire"
   },
   {
     modelo: "P003",
@@ -61,8 +72,8 @@ function renderProducts() {
     const card = document.createElement("div");
     card.className = "product-card";
 
-    // Producto especial angel con dos imágenes
-    if (product.modelo === "angel") {
+    // Productos con información completa (angel y Jordan 23)
+    if (product.modelo === "angel" || product.modelo === "Jordan 23") {
       card.innerHTML = `
         <div class="image-container">
           <img src="${product.imagenDelantera}" alt="${product.modelo} - Delantera" class="product-image active">
@@ -100,7 +111,7 @@ function renderProducts() {
         <p>Tallas: ${product.tallas.join(", ")}</p>
       `;
     }
-
+    
     container.appendChild(card);
   });
 }
@@ -199,36 +210,26 @@ function openProductModal(product) {
   // Agregar el modal al body
   document.body.appendChild(modal);
   
-
-  
+  // Configurar transición de imágenes en el modal
+  setupModalImageTransition(modal);
   // Cerrar modal al hacer click en X o fuera del contenido
   const closeBtn = modal.querySelector('.close-modal');
-  closeBtn.addEventListener('click', () => {
+  
+  function closeModal() {
+    document.body.style.overflow = 'auto';
     document.body.removeChild(modal);
-  });
+  }
+  
+  closeBtn.addEventListener('click', closeModal);
   
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-      document.body.removeChild(modal);
+      closeModal();
     }
   });
   
   // Evitar scroll del body cuando el modal está abierto
   document.body.style.overflow = 'hidden';
-  
-  // Restaurar scroll cuando se cierre el modal
-  const originalClose = closeBtn.onclick;
-  closeBtn.onclick = () => {
-    document.body.style.overflow = 'auto';
-    document.body.removeChild(modal);
-  };
-  
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      document.body.style.overflow = 'auto';
-      document.body.removeChild(modal);
-    }
-  };
 }
 
 // Función para manejar transición de imágenes en el modal
